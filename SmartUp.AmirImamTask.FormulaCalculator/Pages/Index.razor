@@ -1,0 +1,95 @@
+﻿@page "/"
+
+<div class="row">
+    <div class="col-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Field Name
+                        <div>@errorsList.GetErrorsListAsHtml("FieldName")</div>
+                    </th>
+                    <th>
+                        Description
+                        <div>@errorsList.GetErrorsListAsHtml("FieldDescription")</div>
+                    </th>
+                    <th>
+                        Formula
+                    </th>
+                    <th>
+                        Column Index
+                    </th>
+                    <th>
+                        Row Index
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>
+                        <input @bind=model.FieldName class="form-control" />
+                        
+                    </th>
+                    <th>
+                        <input @bind=model.FieldDescription class="form-control" />
+                        
+                    </th>
+                    <th>
+                        <input @bind=model.Formula class="form-control" />
+                    </th>
+                    <th>
+                        <input type="number" @bind=model.ColumnIndex class="form-control" />
+                    </th>
+                    <th>
+                        <input type="number" @bind=model.RowIndex class="form-control" />
+                    </th>
+                    <th>
+                        <button class="btn btn-primary" @onclick=AddModel>
+                            <i class="oi oi-plus"></i>
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (TableModel item in modelsList)
+                {
+                    <tr>
+                        <td>@item.FieldName</td>
+                        <td>@item.FieldDescription</td>
+                        <td>@item.Formula</td>
+                        <td>@item.ColumnIndex</td>
+                        <td>@item.RowIndex</td>
+                        <td></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div>@errorsList.GetErrorsListAsHtml("EmptyFormula")</div>
+    <div class="col-12 text-center">
+        <button class="btn btn-success" @onclick=Reflect>Reflect</button>
+    </div>
+
+    <div class="col-3"></div>
+    <div class="col-6">
+        <Virtualize Items="reflectedList" Context="_row">
+            <div class="row">
+                <Virtualize Items="_row.Value">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label>@context.FieldDescription</label>
+                            <input @bind=context.Value type="number"  class="form-control" disabled="@(!String.IsNullOrEmpty(context.Formula))" />
+                        </div>
+                    </div>
+                </Virtualize>
+            </div>
+        </Virtualize>
+    </div>
+    <div class="col-3"></div>
+    <div>@errorsList.GetErrorsListAsHtml("ReflectedList")</div>
+    <div class="col-12 text-center">
+        <button @onclick=Calculate class="btn btn-danger">Calculate</button>
+    </div>
+</div>
+
